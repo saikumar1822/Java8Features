@@ -1,0 +1,393 @@
+Lambda Expressions
+============================
+-> to bring benefits of functional programming into java
+-->it  is an anonymous function
+     -no name
+     -without return type
+    --with out modifiers
+example 1:without aruguments
+===========
+public void m1(){
+ System.out.println("hello");   -->   m1()->system.out.println("hello");
+
+}
+
+Example-2: with arguments
+--------------------------------------
+public void m1(int a,int b){
+ System.out.println(a+b);         ----->  (a,b)->System.out.println(a+b)
+}
+
+Example-3: with return type
+--------------------------------------
+public int m1(int a,int b){
+ return n*n                               ----->  (a,b)->{return n*n}  ------ we can use return type with in the curly braces only
+                                                  ----->   (a,b) ->n*n
+}
+
+Functional Interfaces
+======================
+->To invoke the lambda expressions we can go for functional interface
+-> it should contain only One Abstract method(SAM)
+Examples
+-------------------
+Runnable ===> run();
+Comparable ===>compareTo()
+
+@FunctionalInterface
+interface interf12{
+	public void m1();
+}
+
+interface interf1{
+	public void m1(int a,int b);
+}
+
+class Demo implements interf12{
+	@Override
+	public void m1() {
+		System.out.println("wellcome to functional interface");
+	}
+	
+}
+public class FunctionalInterfaceExample {
+	public static void main(String ... args) {
+		Demo d=new Demo();
+		d.m1(); 
+		interf12 i=()->System.out.println("welcome to demo");  
+		i.m1();
+		interf1 i1=(a,b)->System.out.println(a+b);
+		i1.m1(10, 20);
+	}
+
+}
+
+Fuctional interface With Respect to the MultiThreading Concept
+==================================================================
+/*class MyRunnable implements Runnable {
+
+	@Override
+	public void run() {
+		for (int i = 0; i < 10; i++) {
+			System.out.println("child thread");
+		}
+	}
+
+}
+*/
+public class MultiThreading {
+	public static void main(String[] args) {
+		//MyRunnable r = new MyRunnable();    //  ---> instead of creating class ,object and calling with the refernce 
+		Runnable r1=()->{for (int i = 0; i < 10; i++) {
+			System.out.println("Lambda thread"); //----> we can use lambda expressions
+		}
+		};
+		Thread t = new Thread(r1);
+		t.start();
+		for (int i = 0; i < 10; i++) {
+			System.out.println("main thread");
+		}
+
+	}
+}
+
+Default methods in Interface
+=========================================
+Until 1.7v of java Every method present inside interface is always public and abstract
+
+----  void m1();
+----  public void m1();                   ----------> all mean the same
+---- public abstract void m1();
+In 1.8v of java default method and static methods we can use inside an interface
+
+Default--->  to add an method inside an interface  with out affecting the implementing classes is the concept of default method
+
+Object class methods you cant declare them as default because it is already availble to all the java classes
+Example;-
+---------------
+default int hashCode(){  -----------> you will get complier error
+} 
+
+Example:
+----------------------
+interface Interface{
+	public void m1();
+	public void m2();
+	default void m3() {     ------------ if you remove default keyword then all the imlementing classes also should implement the this method
+	}
+}
+class test implements Interface{
+	
+	public void m3() {
+		System.out.println("defaclt method");
+	}
+
+	@Override
+	public void m1() {
+		
+	}
+	@Override
+	public void m2() {
+		
+	}
+	
+}
+class test1 implements Interface{
+
+	@Override
+	public void m1() {
+		
+	}
+	@Override
+	public void m2() {
+		
+	}
+	
+}
+class test2 implements Interface{
+
+	@Override
+	public void m1() {	
+	}
+	@Override
+	public void m2() {	
+	}	
+}
+public class DefaultMethods {
+	public static void main(String ... args) {
+		test test1=new test();
+		test1.m3();
+	}
+
+}
+----------------------------------------------------------------------------------------------------------------
+Static methods in interface
+=====================================================
+class  vs interface
+---------------------------------------------------------------
+-----> class contains constructors ,objects where as interface doesn't contain the constructors and objects
+
+---> when ever you have all the methods as static go for interface instead of class beacause interface less weight compare to class
+
+Example
+-----------------------------------------
+interface method{
+	public static void test() {
+		System.out.println("interface static method");
+	}
+}
+public class StaticMethodInInterface implements method {
+	public static void main(String ...strings ) {
+		method.test();  -------------- the only way to call interface static methods as with their interface names
+	}
+
+}
+-------------------------------------------------------------------------------------------------
+Method And constructor Refernce
+=================================
+-> which is alternative to the lambda expressions
+When to Use
+------------------
+-> when you have pre exiting code with you
+
+Example:
+----------------
+class Demo1{
+
+public static void m1() {
+	for (int i = 0; i < 10; i++) {
+		System.out.println("static child thread");
+	}
+}
+
+public  void m2() {
+	for (int i = 0; i < 10; i++) {
+		System.out.println("instace thread");
+	}
+}
+
+}
+public class MethodRefernce {
+
+public static void main(String[] args) {
+	Demo1 d=new Demo1();
+	Runnable r2=d::m2; // -> Instance method refernce
+	Runnable r1=Demo1::m1;// -> Static method refernce
+	Thread t = new Thread(r1);
+	Thread t2 = new Thread(r2);
+	
+	t.start();
+	t2.start();
+	for (int i = 0; i < 10; i++) {
+		System.out.println("main thread");
+	}
+}
+}
+-----------------------------------------------------------------------------------------------------------
+Streams API
+================
+Differnce between Collection and Stream
+------------------------------------------------------------
+Collection --> To represent the group of object as the single entity
+Stream --> to process the  objects form the collection
+
+We have two stream packages availble 
+1 ->java.io.Streams  --> always talk about the stream of data -----> binary data
+2 -> java.util.streams ----> talks about the stream of objects 
+
+How to create Streams
+======================
+Stream s= list.Stream();
+where list is a collection
+List<Integer> list2=list.stream().filter(i->i%2==0).collect(collectors.toList());
+
+Stream()-> to process the collection objects
+filter(predicate) -> predecate--> lambda Expressions ->always return a boolean value
+map(function)--> for every object i want  a new object after applying some function
+
+Where to use Streams
+--------------------------------
+where ever collections are there we can able to apply streams
+
+filter
+------------
+when you give 10 elements as the input you will get output as 0 t0 10 or <=10
+Map
+------------
+you will get output as equal to input that you give
+
+-------------------------------------------------------------
+Example
+===========
+public class StreamsExample {
+
+	public static void main(String[] args) {
+		ArrayList<Integer> list=new ArrayList<Integer>();
+		list.add(0);
+		list.add(5);
+		list.add(10);
+		list.add(15);
+		list.add(20);
+		System.out.println(list);
+	List<Integer> list2=list.stream().filter(i->i%2==0).collect(Collectors.toList()); ----> output is even values
+	System.out.println(list2);
+
+	}
+
+}
+
+---------------------------------------
+public class StreamMapExample {
+	public static void main(String[] args) {
+		ArrayList<Integer> marks=new ArrayList<Integer>();
+		marks.add(100);
+		marks.add(40);
+		marks.add(90);
+		marks.add(45);
+		marks.add(45);
+		marks.add(10); 
+		marks.add(15);
+		marks.add(20);
+		System.out.println(marks);
+	List<Integer> cutomizedsorting=marks.stream().sorted((i1,i2)->((i1<i2)?1:(i1>i2)?-1:0)).collect(Collectors.toList());
+	  System.out.println("cutomizedsorting"+" "+cutomizedsorting); ------>cutomizedsorting 
+	List<Integer> compareTo=marks.stream().sorted((i1,i2)->-i1.compareTo(i2)).collect(Collectors.toList()); ---- > Sorting by using compareTo()
+	System.out.println("compareTo"+"   "+compareTo);
+                
+	List<Integer> UpatedMarks=marks.stream().map(i->i+5).collect(Collectors.toList());----> map function -> upadting the student marks by 5
+	System.out.println(" map"+ " "+UpatedMarks);
+	List<Integer> sorted=marks.stream().sorted().collect(Collectors.toList());
+	System.out.println(" sorted"+"  "+sorted);
+	long noOfFailedStudents=marks.stream().filter(i->i<=35).count();  -------> filter()
+	System.out.println(" noOfFailedStudents count"+" "+noOfFailedStudents);
+
+	}
+}
+---------------------------------------------------------------------------------------
+Example With respect to the product Object
+----------------------------------------------------
+class Product{  
+    int id;  
+    String name;  
+    float price;  
+    public Product(int id, String name, float price) {  
+        this.id = id;  
+        this.name = name;  
+        this.price = price;  
+    }
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + ", price=" + price + "]";
+	}  
+    
+}  
+public class JavaStreamExample {  
+    public static void main(String[] args) {  
+        List<Product> productsList = new ArrayList<Product>();  
+        //Adding Products  
+        productsList.add(new Product(1,"HP Laptop",25000f));  
+        productsList.add(new Product(2,"Dell Laptop",30000f));  
+        productsList.add(new Product(3,"Lenevo Laptop",28000f));  
+        productsList.add(new Product(4,"Sony Laptop",28000f));  
+        productsList.add(new Product(5,"Apple Laptop",90000f)); 
+        
+        long count=productsList.stream().filter(i->i.price>=35).count();
+    	System.out.println("  count"+" "+count);
+		
+    	List<Product> compareTo=productsList.stream().sorted((i1,i2)->-i2.name.compareTo(i1.name)).collect(Collectors.toList()); ----implementing compareTo()
+		System.out.println("compareTo"+"   "+compareTo);
+      
+		 Set<Float> productPriceList = productsList.stream().filter(i->i.price < 30000).map(i->i.price).collect(Collectors.toSet());
+                            ----->filter() based on price
+
+		 System.out.println("list to set"+ "  "+productPriceList);
+	List<Float> UpatedPrice=productsList.stream().map(i->i.price+5).collect(Collectors.toList()); adding 5 to the price by using map();
+	System.out.println(" map"+ " "+UpatedPrice);
+	
+	 Product productA = productsList.stream()  
+             .max((product1, product2)->   
+             product1.price > product2.price ? 1: -1).get();  ------------>max price
+
+System.out.println(productA.price);  
+Product productB = productsList.stream().max((product1, product2)-> product1.price < product2.price ? 1:- 1).get();  ---------minum price
+System.out.println(productB.price);  
+
+    
+    }  
+}  
+===================
+Java forEach loop
+==========================
+Java provides a new method forEach() to iterate the elements. It is defined in Iterable and Stream interface. It is a default method defined in the Iterable interface. Collection classes which extends Iterable interface can use forEach loop to iterate elements.
+
+This method takes a single parameter which is a functional interface. So, you can pass lambda expression as an argument
+
+Example 1->-Iterating by passing lambda expression
+--------------------
+public class ForEachExample {  
+    public static void main(String[] args) {  
+        List<String> gamesList = new ArrayList<String>();  
+        gamesList.add("Football");  
+        gamesList.add("Cricket");  
+        gamesList.add("Chess");  
+        gamesList.add("Hocky");  
+        System.out.println("------------Iterating by passing lambda expression--------------");  
+        gamesList.forEach(games -> System.out.println(games));  
+          
+    }  
+}  
+exmple 2->Iterating by passing method reference
+-----------------
+public class ForEachExample {  
+    public static void main(String[] args) {  
+        List<String> gamesList = new ArrayList<String>();  
+        gamesList.add("Football");  
+        gamesList.add("Cricket");  
+        gamesList.add("Chess");  
+        gamesList.add("Hocky");  
+        System.out.println("------------Iterating by passing method reference---------------");  
+        gamesList.forEach(System.out::println);  
+    }  
+}  
+
+ 
