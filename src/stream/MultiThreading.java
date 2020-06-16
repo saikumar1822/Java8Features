@@ -25,4 +25,15 @@ public class MultiThreading {
 		}
 
 	}
+
+	@GetMapping("/product")
+	public ResponseEntity<StoreRatingDto> getProduct(@RequestParam String productName) throws ProductNameNotFoundException, ProductNotFound {
+
+		StoreRatingDto product=productService.getProduct(productName);
+
+		return new ResponseEntity<>(product, HttpStatus.OK);
+
+	}
+	
+
 }
