@@ -17,6 +17,20 @@ public class StreamsExample {
 	List<Integer> list2=list.stream().filter(i->i%2==0).collect(Collectors.toList());
 	System.out.println(list2);
 
+public class StreamsExample {
+
+	public static void main(String[] args) {
+		ArrayList<Integer> list=new ArrayList<Integer>();
+		list.add(0);
+		list.add(5);
+		list.add(10);
+		list.add(15);
+		list.add(20);
+		System.out.println(list);
+	List<Integer> list2=list.stream().filter(i->i%2==0).collect(Collectors.toList());
+	System.out.println(list2);
+
+
 *************************************************************************
 List<Integer> compareTo=marks.stream().sorted((i1,i2)->-i1.compareTo(i2)).collect(Collectors.toList());
 		System.out.println("compareTo"+"   "+compareTo);
