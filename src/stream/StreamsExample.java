@@ -17,6 +17,19 @@ public class StreamsExample {
 	List<Integer> list2=list.stream().filter(i->i%2==0).collect(Collectors.toList());
 	System.out.println(list2);
 
+*************************************************************************
+List<Integer> compareTo=marks.stream().sorted((i1,i2)->-i1.compareTo(i2)).collect(Collectors.toList());
+		System.out.println("compareTo"+"   "+compareTo);
+		System.out.println("cutomizedsorting"+" "+cutomizedsorting);
+	List<Integer> UpatedMarks=marks.stream().map(i->i+5).collect(Collectors.toList());
+	System.out.println(" map"+ " "+UpatedMarks);
+	List<Integer> sorted=marks.stream().sorted().collect(Collectors.toList());
+	System.out.println(" sorted"+"  "+sorted);
+	long noOfFailedStudents=marks.stream().filter(i->i<=35).count();
+	System.out.println(" noOfFailedStudents count"+" "+noOfFailedStudents);
+	
+
+
 	}
 
 }
